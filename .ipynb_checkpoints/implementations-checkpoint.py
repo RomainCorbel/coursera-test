@@ -57,13 +57,6 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
         gradient = compute_gradient(y, tx, w)
         #loss = compute_mse(y, tx, w)
         w = w-gamma * gradient
-'''
-        print(
-            "GD iter. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(
-                bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]
-            )
-        )
-'''
     loss = compute_mse(y, tx, w)
     return w,loss
     
@@ -110,13 +103,6 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
             gradient = compute_gradient(minibatch_y, minibatch_tx, w)
             #loss = compute_mse(y, tx, w)
             w = w-gamma * gradient
-'''
-        print(
-            "SGD iter. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(
-                bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]
-            )
-        )
-'''
     loss = compute_mse(y, tx, w)
     return w,loss
     
