@@ -89,13 +89,10 @@ def compute_gradient(y, tx, w):
     Returns:
         An numpy array of shape (2, ) (same shape as w), containing the gradient of the loss at w.
     """
-    # ***************************************************
     N = len(y)
     txT = np.reshape(tx,(2,-1))
     e = np.reshape(y-np.reshape(np.dot(tx,w),(1,-1)),(-1,1))
     grad = -1/N * (np.dot(txT,e))
-    # ***************************************************
-    #raise NotImplementedError
     return np.reshape(grad,(1,-1))
 
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
@@ -114,7 +111,6 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """
     w = initial_w
     for n_iter in range(max_iters):
-        # ***************************************************
         gradient = compute_gradient(y, tx, w)
         loss = compute_mse(y, tx, w)
         w = w-gamma * gradient
@@ -126,7 +122,7 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     
     return w,loss
     
-################## mean_sqared_error_sgd
+################## mean_squared_error_sgd
 '''
 def compute_stoch_gradient(y, tx, w):
     """Compute a stochastic gradient at w from a data sample batch of size B, where B < N, and their corresponding labels.
@@ -192,14 +188,11 @@ def compute_stoch_gradient(y, tx, w):
     Returns:
         A numpy array of shape (2, ) (same shape as w), containing the stochastic gradient of the loss at w.
     """
-
-    # ***************************************************
     N = len(y)
     txT = np.reshape(tx,(2,-1))
     e = np.reshape(y-np.reshape(np.dot(tx,w),(1,-1)),(-1,1))
     grad = -1/N * (np.dot(txT,e))
     grad = np.reshape(grad, ((1,-1)))
-    # ***************************************************
     return grad
 
 
@@ -221,7 +214,6 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
     w = initial_w
 
     for n_iter in range(max_iters):
-        # ***************************************************
         for minibatch_y, minibatch_tx in batch_iter(y, tx, 32):
             gradient = compute_gradient(minibatch_y, minibatch_tx, w)
             loss = compute_mse(y, tx, w)
@@ -233,6 +225,7 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
             )
         )
     return w,loss
+    
 ################## least_squares
 def least_squares(y, tx):
     """Calculate the least squares solution.
@@ -249,9 +242,6 @@ def least_squares(y, tx):
     >>> least_squares(np.array([0.1,0.2]), np.array([[2.3, 3.2], [1., 0.1]]))
     (array([ 0.21212121, -0.12121212]), 8.666684749742561e-33)
     """
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # least squares: TODO
     # returns mse, and optimal weights
     wstar = np.linalg.solve(np.dot(np.transpose(tx), tx), np.dot(np.transpose(tx), y))
     mse = compute_mse(y, tx, wstar)
@@ -321,16 +311,10 @@ def calculate_loss(y, tx, w):
     """
     assert y.shape[0] == tx.shape[0]
     assert tx.shape[1] == w.shape[0]
-
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # TODO
     N = len(y)
     t = np.dot(tx,w) # N*1
     L= (-1/N) * (y*np.log(sigmoid(t))+(1-y)*np.log(1-sigmoid(t))).sum() # * for element-wise
     return(L)
-    # ***************************************************
-    # raise NotImplementedError
 
 def calculate_gradient(y, tx, w):
     """compute the gradient of loss.
@@ -352,15 +336,10 @@ def calculate_gradient(y, tx, w):
            [ 0.2067104 ],
            [ 0.51712843]])
     """
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # TODO
     N = np.shape(y)[0]
     t = np.dot(tx,w)
     grad = (1/N)*np.dot(np.transpose(tx),sigmoid(t)-y)
     return grad
-    # ***************************************************
-    # raise NotImplementedError("Calculate gradient")
 
 def learning_by_gradient_descent(y, tx, w, gamma):
     """
@@ -388,14 +367,9 @@ def learning_by_gradient_descent(y, tx, w, gamma):
            [0.17932896],
            [0.24828716]])
     """
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # TODO
     w_new = w-gamma*calculate_gradient(y, tx, w)
     loss = calculate_loss(y, tx, w)
     return loss,w_new
-    # ***************************************************
-    #raise NotImplementedError
 
 def calculate_hessian(y, tx, w):
     """return the Hessian of the loss function.
@@ -416,17 +390,12 @@ def calculate_hessian(y, tx, w):
            [0.3861498 , 0.62182124, 0.85749269],
            [0.48268724, 0.85749269, 1.23229813]])
     """
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # calculate Hessian: TODO
     N = np.shape(y)[0]
     t = np.dot(tx,w) 
     diag_elements = sigmoid(t)*(1-sigmoid(t))
     S = np.diag(diag_elements.flatten())
     hessian = (1/N)*np.dot(np.dot(np.transpose(tx),S),tx) # (3 2)(2 2)(2 3)
     return hessian
-    # ***************************************************
-    #raise NotImplementedError
 
 def logistic_regression(y,tx,initial_w,max_iters,gamma):
     """Performs logistic regression using gradient descent.
@@ -500,18 +469,9 @@ def learning_by_newton_method(y, tx, w, gamma):
            [ 1.0590277 ],
            [ 0.80091466]])
     """
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # return loss, gradient and Hessian: TODO
+
     loss,gradient,hessian = logistic_regression(y, tx, w)
-    # ***************************************************
-    # raise NotImplementedError
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # update w: TODO
     w = w-gamma*np.dot(np.linalg.inv(hessian),gradient)
-    # ***************************************************
-    #raise NotImplementedError
     return loss, w
 
 def penalized_logistic_regression(y, tx, w, lambda_):
@@ -539,11 +499,8 @@ def penalized_logistic_regression(y, tx, w, lambda_):
            [ 0.2467104 ],
            [ 0.57712843]])
     """
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # return loss, gradient, and Hessian: TODO  
     loss, gradient, _ = logistic_regression(y, tx, w)
-    penalized_loss = loss + lambda_*np.linalg.norm(w)**2 # PAS TROP COMPRIS POURQUOI ON IGNORE CA
+    penalized_loss = loss + lambda_*np.linalg.norm(w)**2 
     penalized_gradient = gradient + 2*lambda_*w
 
     return loss, penalized_gradient
@@ -578,18 +535,8 @@ def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
            [0.17532896],
            [0.24228716]])
     """
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # return loss, gradient: TODO
     loss, gradient = penalized_logistic_regression(y, tx, w, lambda_)
-    # ***************************************************
-    #raise NotImplementedError
-    # ***************************************************
-    # INSERT YOUR CODE HERE
-    # update w: TODO
     w = w-gamma*gradient
-    # ***************************************************
-    #raise NotImplementedError
     return loss, w
 
 def reg_logistic_regression(y,tx,lambda_,initial_w,max_iters,gamma):
