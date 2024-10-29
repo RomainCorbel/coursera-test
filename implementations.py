@@ -62,7 +62,7 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
                 bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]
             )
         )
-    
+    loss = compute_mse(y, tx, w)
     return w,loss
     
 ################## mean_squared_error_sgd
@@ -114,6 +114,7 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
                 bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]
             )
         )
+    loss = compute_mse(y, tx, w)
     return w,loss
     
 ################## least_squares
