@@ -109,36 +109,22 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
         gamma: a scalar denoting the stepsize
 
     Returns:
-        losses: a list of length max_iters containing the loss value (scalar) for each iteration of GD
-        ws: a list of length max_iters containing the model parameters as numpy arrays of shape (2, ), for each iteration of GD
+        w: last model parameters
+        loss: last loss value
     """
-    # Define parameters to store w and loss
-    ws = [initial_w]
-    losses = []
     w = initial_w
     for n_iter in range(max_iters):
         # ***************************************************
         gradient = compute_gradient(y, tx, w)
         loss = compute_mse(y, tx, w)
-        # ***************************************************
-        
-        # ***************************************************
         w = w-gamma * gradient
-        w=w[0]
-        
-        # ***************************************************
-     
-
-        # store w and loss
-        ws.append(w)
-        losses.append(loss)
         print(
             "GD iter. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(
                 bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]
             )
         )
     
-    return losses, ws
+    return w,loss
     
 ################## mean_sqared_error_sgd
 '''
@@ -229,13 +215,9 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
         gamma: a scalar denoting the stepsize
 
     Returns:
-        losses: a list of length max_iters containing the loss value (scalar) for each iteration of SGD
-        ws: a list of length max_iters containing the model parameters as numpy arrays of shape (2, ), for each iteration of SGD
+        w: last model parameters
+        loss: last loss value
     """
-
-    # Define parameters to store w and loss
-    ws = [initial_w]
-    losses = []
     w = initial_w
 
     for n_iter in range(max_iters):
@@ -244,19 +226,13 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
             gradient = compute_gradient(minibatch_y, minibatch_tx, w)
             loss = compute_mse(y, tx, w)
             w = w-gamma * gradient
-            w=w[0]
-        
-        # ***************************************************
-
-        ws.append(w)
-        losses.append(loss)
 
         print(
             "SGD iter. {bi}/{ti}: loss={l}, w0={w0}, w1={w1}".format(
                 bi=n_iter, ti=max_iters - 1, l=loss, w0=w[0], w1=w[1]
             )
         )
-    return losses, ws
+    return w,loss
 ################## least_squares
 def least_squares(y, tx):
     """Calculate the least squares solution.
