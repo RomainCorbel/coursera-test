@@ -1,7 +1,6 @@
 import numpy as np
 from helpers import *
 
-####################################################### STEP 2
 ################## mean_sqared_error_gd
 def compute_mse(y, tx, w):
     """compute the loss by mse.
@@ -148,7 +147,8 @@ def ridge_regression(y, tx, lambda_):
     A = np.dot(np.transpose(tx), tx) + np.dot(lambda_prime, I)
     B = np.dot(np.transpose(tx), y)
     w = np.linalg.solve(A, B)
-    return w
+    loss = compute_mse(y, tx, w)
+    return w,loss
 
 ################## logistic_regression
 def sigmoid(t):
@@ -316,7 +316,7 @@ def logistic_regression(y,tx,initial_w,max_iters,gamma):
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
         
-    return w
+    return w,loss
 
 def learning_by_newton_method(y, tx, w, gamma):
     """
@@ -414,7 +414,7 @@ def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
     """
     loss, gradient = penalized_logistic_regression(y, tx, w, lambda_)
     w = w-gamma*gradient
-    return loss, w
+    return w,loss
 
 def reg_logistic_regression(y,tx,lambda_,initial_w,max_iters,gamma):
     """Performs regularized logistic regression using penalized gradient descent.
@@ -450,7 +450,7 @@ def reg_logistic_regression(y,tx,lambda_,initial_w,max_iters,gamma):
     # start the logistic regression
     for iter in range(max_iters):
         # get loss and update w.
-        loss, w = learning_by_penalized_gradient(y, tx, w, gamma, lambda_)
+        w,loss = learning_by_penalized_gradient(y, tx, w, gamma, lambda_)
         # log info
         if iter % 100 == 0:
             print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
@@ -459,4 +459,5 @@ def reg_logistic_regression(y,tx,lambda_,initial_w,max_iters,gamma):
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
     print("loss={l}".format(l=calculate_loss(y, tx, w)))
-####################################################### END OF STEP 2
+    return w, loss
+
