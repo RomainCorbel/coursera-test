@@ -164,7 +164,8 @@ def sigmoid(t):
     array([0.52497919, 0.52497919])
     """
     #raise NotImplementedError
-    sigma = (1+np.exp(-t))**(-1)
+    # sigma = (1+np.exp(-t))**(-1)
+    sigma = np.exp(t)/(1+np.exp(t))
     return (sigma)
 
 def calculate_loss(y, tx, w):
@@ -188,7 +189,7 @@ def calculate_loss(y, tx, w):
     assert tx.shape[1] == w.shape[0]
     N = len(y)
     t = np.dot(tx,w) # N*1
-    L= (-1/N) * (y*np.log(sigmoid(t))+(1-y)*np.log(1-sigmoid(t))).sum() # * for element-wise
+    L= (-1/N) * (y*np.log(sigmoid(t))+(1-y)*np.log(1-sigmoid(t))).sum()
     return(L)
 
 def calculate_gradient(y, tx, w):
@@ -327,7 +328,7 @@ def logistic_regression(y,tx,initial_w,max_iters,gamma):
         Current iteration=100, loss=0.5931471805599453
         ...
     """
-    threshold = 1e-10
+    threshold = 1e-8
     losses = []
     w = initial_w
     
@@ -477,7 +478,7 @@ def reg_logistic_regression(y,tx,lambda_,initial_w,max_iters,gamma):
         ...
         loss=0.5001471805599453
     """
-    threshold = 1e-10
+    threshold = 1e-8
     losses = []
     w = initial_w
     if max_iters == 0:
