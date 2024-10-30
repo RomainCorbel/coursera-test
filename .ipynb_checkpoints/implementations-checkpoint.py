@@ -1,6 +1,7 @@
 import numpy as np
 from helpers import *
 
+
 ################## mean_sqared_error_gd
 def compute_mse(y, tx, w):
     """compute the loss by mse.
@@ -20,6 +21,7 @@ def compute_mse(y, tx, w):
     mse = e.dot(e) / (2 * len(e))
     return mse
 
+
 def compute_gradient(y, tx, w):
     """Computes the gradient at w.
 
@@ -31,9 +33,10 @@ def compute_gradient(y, tx, w):
     Returns:
         An numpy array of shape (2, ) (same shape as w), containing the gradient of the loss at w.
     """
-    e = y-np.dot(tx,w)
-    grad = -1/len(tx) *np.dot(np.transpose(tx),e)
+    e = y - np.dot(tx, w)
+    grad = -1 / len(tx) * np.dot(np.transpose(tx), e)
     return grad
+
 
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """The Gradient Descent (GD) algorithm.
@@ -52,11 +55,13 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     w = initial_w
     for n_iter in range(max_iters):
         gradient = compute_gradient(y, tx, w)
-        w = w-gamma * gradient
+        w = w - gamma * gradient
     loss = compute_mse(y, tx, w)
-    return w,loss
-    
+    return w, loss
+
+
 ################## mean_squared_error_sgd
+
 
 def compute_stoch_gradient(y, tx, w):
     """Compute a stochastic gradient at w from a data sample batch of size B, where B < N, and their corresponding labels.
@@ -70,10 +75,10 @@ def compute_stoch_gradient(y, tx, w):
         A numpy array of shape (2, ) (same shape as w), containing the stochastic gradient of the loss at w.
     """
     N = len(y)
-    txT = np.reshape(tx,(2,-1))
-    e = np.reshape(y-np.reshape(np.dot(tx,w),(1,-1)),(-1,1))
-    grad = -1/N * (np.dot(txT,e))
-    grad = np.reshape(grad, ((1,-1)))
+    txT = np.reshape(tx, (2, -1))
+    e = np.reshape(y - np.reshape(np.dot(tx, w), (1, -1)), (-1, 1))
+    grad = -1 / N * (np.dot(txT, e))
+    grad = np.reshape(grad, ((1, -1)))
     return grad
 
 
@@ -96,10 +101,11 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma):
     for n_iter in range(max_iters):
         for minibatch_y, minibatch_tx in batch_iter(y, tx, 1):
             gradient = compute_gradient(minibatch_y, minibatch_tx, w)
-            w = w-gamma * gradient
+            w = w - gamma * gradient
     loss = compute_mse(y, tx, w)
-    return w,loss
-    
+    return w, loss
+
+
 ################## least_squares
 def least_squares(y, tx):
     """Calculate the least squares solution.
@@ -120,6 +126,7 @@ def least_squares(y, tx):
     wstar = np.linalg.solve(np.dot(np.transpose(tx), tx), np.dot(np.transpose(tx), y))
     mse = compute_mse(y, tx, wstar)
     return wstar, mse
+
 
 ################## ridge_regression
 def ridge_regression(y, tx, lambda_):
@@ -146,7 +153,8 @@ def ridge_regression(y, tx, lambda_):
     B = np.dot(np.transpose(tx), y)
     w = np.linalg.solve(A, B)
     loss = compute_mse(y, tx, w)
-    return w,loss
+    return w, loss
+
 
 ################## logistic_regression
 def sigmoid(t):
@@ -163,8 +171,9 @@ def sigmoid(t):
     >>> sigmoid(np.array([0.1, 0.1]))
     array([0.52497919, 0.52497919])
     """
-    sigma = np.exp(t)/(1+np.exp(t))
-    return (sigma)
+    sigma = np.exp(t) / (1 + np.exp(t))
+    return sigma
+
 
 def calculate_loss(y, tx, w):
     """compute the cost by negative log likelihood.
@@ -186,9 +195,10 @@ def calculate_loss(y, tx, w):
     assert y.shape[0] == tx.shape[0]
     assert tx.shape[1] == w.shape[0]
     N = len(y)
-    t = np.dot(tx,w) # N*1
-    L= (-1/N) * (y*np.log(sigmoid(t))+(1-y)*np.log(1-sigmoid(t))).sum()
-    return(L)
+    t = np.dot(tx, w)  # N*1
+    L = (-1 / N) * (y * np.log(sigmoid(t)) + (1 - y) * np.log(1 - sigmoid(t))).sum()
+    return L
+
 
 def calculate_gradient(y, tx, w):
     """compute the gradient of loss.
@@ -211,9 +221,10 @@ def calculate_gradient(y, tx, w):
            [ 0.51712843]])
     """
     N = np.shape(y)[0]
-    t = np.dot(tx,w)
-    grad = (1/N)*np.dot(np.transpose(tx),sigmoid(t)-y)
+    t = np.dot(tx, w)
+    grad = (1 / N) * np.dot(np.transpose(tx), sigmoid(t) - y)
     return grad
+
 
 def learning_by_gradient_descent(y, tx, w, gamma):
     """
@@ -241,9 +252,10 @@ def learning_by_gradient_descent(y, tx, w, gamma):
            [0.17932896],
            [0.24828716]])
     """
-    w_new = w-gamma*calculate_gradient(y, tx, w)
+    w_new = w - gamma * calculate_gradient(y, tx, w)
     loss = calculate_loss(y, tx, w_new)
-    return w_new,loss
+    return w_new, loss
+
 
 def calculate_hessian(y, tx, w):
     """return the Hessian of the loss function.
@@ -265,11 +277,12 @@ def calculate_hessian(y, tx, w):
            [0.48268724, 0.85749269, 1.23229813]])
     """
     N = np.shape(y)[0]
-    t = np.dot(tx,w) 
-    diag_elements = sigmoid(t)*(1-sigmoid(t))
+    t = np.dot(tx, w)
+    diag_elements = sigmoid(t) * (1 - sigmoid(t))
     S = np.diag(diag_elements.flatten())
-    hessian = (1/N)*np.dot(np.dot(np.transpose(tx),S),tx) # (3 2)(2 2)(2 3)
+    hessian = (1 / N) * np.dot(np.dot(np.transpose(tx), S), tx)  # (3 2)(2 2)(2 3)
     return hessian
+
 
 def loss_grad_hess(y, tx, w):
     """return the loss, gradient of the loss, and hessian of the loss.
@@ -300,9 +313,10 @@ def loss_grad_hess(y, tx, w):
     Loss = calculate_loss(y, tx, w)
     gradient = calculate_gradient(y, tx, w)
     hessian = calculate_hessian(y, tx, w)
-    return Loss,gradient,hessian
-    
-def logistic_regression(y,tx,initial_w,max_iters,gamma):
+    return Loss, gradient, hessian
+
+
+def logistic_regression(y, tx, initial_w, max_iters, gamma):
     """Performs logistic regression using gradient descent.
 
     Args:
@@ -329,21 +343,22 @@ def logistic_regression(y,tx,initial_w,max_iters,gamma):
     threshold = 1e-8
     losses = []
     w = initial_w
-    
+
     if max_iters == 0:
-        return w,calculate_loss(y, tx, w)
-    else: 
+        return w, calculate_loss(y, tx, w)
+    else:
         # start the logistic regression
         for iter in range(max_iters):
             # get loss and update w.
-            w,loss = learning_by_gradient_descent(y, tx, w, gamma) 
+            w, loss = learning_by_gradient_descent(y, tx, w, gamma)
             # converge criterion
             losses.append(loss)
             if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
-                break 
-        return w,losses[-1]
+                break
+        return w, losses[-1]
 
-def penalized_logistic_regression(y, tx, w,lambda_):
+
+def penalized_logistic_regression(y, tx, w, lambda_):
     """return the loss and gradient.
 
     Args:
@@ -371,12 +386,13 @@ def penalized_logistic_regression(y, tx, w,lambda_):
            [ 0.57712843]])
     """
     loss, gradient, _ = loss_grad_hess(y, tx, w)
-    penalized_loss = loss + lambda_*np.linalg.norm(w)**2 
-    penalized_gradient = gradient + 2*lambda_*w
+    penalized_loss = loss + lambda_ * np.linalg.norm(w) ** 2
+    penalized_gradient = gradient + 2 * lambda_ * w
 
     return loss, penalized_gradient
 
-def learning_by_penalized_gradient(y,tx,w,gamma,lambda_):
+
+def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
     """
     Do one step of gradient descent, using the penalized logistic regression.
     Return the loss and updated w.
@@ -407,12 +423,13 @@ def learning_by_penalized_gradient(y,tx,w,gamma,lambda_):
            [0.17532896],
            [0.24228716]])
     """
-    _, gradient = penalized_logistic_regression(y, tx, w,lambda_)
-    w = w-gamma*gradient
+    _, gradient = penalized_logistic_regression(y, tx, w, lambda_)
+    w = w - gamma * gradient
     loss = calculate_loss(y, tx, w)
-    return w,loss
+    return w, loss
 
-def reg_logistic_regression(y,tx,lambda_,initial_w,max_iters,gamma):
+
+def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     """Performs regularized logistic regression using penalized gradient descent.
 
     Args:
@@ -443,16 +460,14 @@ def reg_logistic_regression(y,tx,lambda_,initial_w,max_iters,gamma):
     losses = []
     w = initial_w
     if max_iters == 0:
-        return w,calculate_loss(y, tx, w)
-    else: 
+        return w, calculate_loss(y, tx, w)
+    else:
         # start the logistic regression
         for iter in range(max_iters):
             # get loss and update w.
-            w,loss = learning_by_penalized_gradient(y,tx,w,gamma,lambda_)
+            w, loss = learning_by_penalized_gradient(y, tx, w, gamma, lambda_)
             # converge criterion
             losses.append(loss)
             if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
                 break
-        return w,losses[-1]
-    
-
+        return w, losses[-1]
