@@ -345,7 +345,7 @@ def logistic_regression(y,tx,initial_w,max_iters,gamma):
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
         
-    return w,losses[-1] if losses else 0
+    return w,losses[-1] if losses else calculate_loss(y, tx, w)
 '''
 def learning_by_newton_method(y, tx, w, gamma):
     """
@@ -491,6 +491,6 @@ def reg_logistic_regression(y,tx,lambda_,initial_w,max_iters,gamma):
         if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
             break
     print("loss={l}".format(l=compute_mse(y, tx, w)))
-    return w,losses[-1] if losses else 0
-    # calculate_loss(y, tx, w)
+    return w,losses[-1] if losses else calculate_loss(y, tx, w)
+    
 
