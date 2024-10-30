@@ -246,7 +246,7 @@ def learning_by_gradient_descent(y, tx, w, gamma):
     """
     w_new = w-gamma*calculate_gradient(y, tx, w)
     loss = calculate_loss(y, tx, w)
-    return loss,w_new
+    return w_new,loss
 
 def calculate_hessian(y, tx, w):
     """return the Hessian of the loss function.
@@ -305,7 +305,7 @@ def logistic_regression(y,tx,initial_w,max_iters,gamma):
     # start the logistic regression
     for iter in range(max_iters):
         # get loss and update w.
-        loss, w = learning_by_gradient_descent(y, tx, w, gamma)
+        w,loss = learning_by_gradient_descent(y, tx, w, gamma)
         #print(w.shape)
         # log info
         if iter % 100 == 0:
@@ -317,7 +317,7 @@ def logistic_regression(y,tx,initial_w,max_iters,gamma):
             break
         
     return w,loss
-
+'''
 def learning_by_newton_method(y, tx, w, gamma):
     """
     Do one step of Newton's method.
@@ -349,8 +349,8 @@ def learning_by_newton_method(y, tx, w, gamma):
 
     loss,gradient,hessian = logistic_regression(y, tx, w)
     w = w-gamma*np.dot(np.linalg.inv(hessian),gradient)
-    return loss, w
-
+    return w,loss
+'''
 def penalized_logistic_regression(y, tx, w, lambda_):
     """return the loss and gradient.
 
