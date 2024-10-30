@@ -349,7 +349,7 @@ def learning_by_newton_method(y, tx, w, gamma):
     w = w-gamma*np.dot(np.linalg.inv(hessian),gradient)
     return w,loss
 '''
-def penalized_logistic_regression(y, tx, w, lambda_):
+def penalized_logistic_regression(y, tx, w, lambda_,max_iters,gamma):
     """return the loss and gradient.
 
     Args:
@@ -357,6 +357,8 @@ def penalized_logistic_regression(y, tx, w, lambda_):
         tx: shape=(N, D)
         w:  shape=(D, 1)
         lambda_: scalar
+        max_iters:
+        gamma:
 
     Returns:
         loss: scalar number
@@ -374,13 +376,13 @@ def penalized_logistic_regression(y, tx, w, lambda_):
            [ 0.2467104 ],
            [ 0.57712843]])
     """
-    loss, gradient, _ = logistic_regression(y, tx, w)
+    loss, gradient, _ = logistic_regression(y,tx,w,max_iters,gamma)
     penalized_loss = loss + lambda_*np.linalg.norm(w)**2 
     penalized_gradient = gradient + 2*lambda_*w
 
     return loss, penalized_gradient
 
-def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
+def learning_by_penalized_gradient(y, tx, w,max_iters, gamma, lambda_):
     """
     Do one step of gradient descent, using the penalized logistic regression.
     Return the loss and updated w.
@@ -389,6 +391,7 @@ def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
         y:  shape=(N, 1)
         tx: shape=(N, D)
         w:  shape=(D, 1)
+        max_iters:
         gamma: scalar
         lambda_: scalar
 
@@ -410,7 +413,7 @@ def learning_by_penalized_gradient(y, tx, w, gamma, lambda_):
            [0.17532896],
            [0.24228716]])
     """
-    loss, gradient = penalized_logistic_regression(y, tx, w, lambda_)
+    loss, gradient = penalized_logistic_regression(y, tx, w, lambda_,max_iters,gamma)
     w = w-gamma*gradient
     return w,loss
 
