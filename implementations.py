@@ -495,6 +495,6 @@ def reg_logistic_regression(y,tx,lambda_,initial_w,max_iters,gamma):
             if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
                 break
         print("loss={l}".format(l=compute_mse(y, tx, w)))
-        return w,final_loss
+        return w,losses[-1]
     
 
