@@ -31,11 +31,9 @@ def compute_gradient(y, tx, w):
     Returns:
         An numpy array of shape (2, ) (same shape as w), containing the gradient of the loss at w.
     """
-    N = len(y)
-    txT = np.reshape(tx,(2,-1))
-    e = np.reshape(y-np.reshape(np.dot(tx,w),(1,-1)),(-1,1))
-    grad = -1/N * (np.dot(txT,e))
-    return np.reshape(grad,(1,-1))
+    e = y-np.dot(tx,w)
+    grad = -1/len(tx) *np.dot(np.transpose(tx),e)
+    return grad
 
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """The Gradient Descent (GD) algorithm.
