@@ -409,7 +409,8 @@ def learning_by_penalized_gradient(y,tx,w,gamma,lambda_):
     """
     loss, gradient = penalized_logistic_regression(y, tx, w,lambda_)
     w = w-gamma*gradient
-    return w,loss
+    loss_new, _ = penalized_logistic_regression(y, tx, w, lambda_)
+    return w,loss_new
 
 def reg_logistic_regression(y,tx,lambda_,initial_w,max_iters,gamma):
     """Performs regularized logistic regression using penalized gradient descent.
