@@ -17,7 +17,7 @@ def compute_mse(y, tx, w):
     0.006417022764962313
     """
     e = y - tx.dot(w)
-    mse = float(e.reshape((1,-1)).dot(e)) / (2 * len(e))
+    mse = e.dot(e) / (2 * len(e))
     return mse
 
 
