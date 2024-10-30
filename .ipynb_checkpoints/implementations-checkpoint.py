@@ -163,8 +163,6 @@ def sigmoid(t):
     >>> sigmoid(np.array([0.1, 0.1]))
     array([0.52497919, 0.52497919])
     """
-    #raise NotImplementedError
-    # sigma = (1+np.exp(-t))**(-1)
     sigma = np.exp(t)/(1+np.exp(t))
     return (sigma)
 
@@ -244,7 +242,7 @@ def learning_by_gradient_descent(y, tx, w, gamma):
            [0.24828716]])
     """
     w_new = w-gamma*calculate_gradient(y, tx, w)
-    loss = calculate_loss(y, tx, w)
+    loss = calculate_loss(y, tx, w_new)
     return w_new,loss
 
 def calculate_hessian(y, tx, w):
@@ -338,51 +336,13 @@ def logistic_regression(y,tx,initial_w,max_iters,gamma):
         # start the logistic regression
         for iter in range(max_iters):
             # get loss and update w.
-            w,loss = learning_by_gradient_descent(y, tx, w, gamma)
-            #print(w.shape)
-            # log info
-            #if iter % 100 == 0:
-                #print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
-                
+            w,loss = learning_by_gradient_descent(y, tx, w, gamma) 
             # converge criterion
             losses.append(loss)
             if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
                 break 
         return w,losses[-1]
-'''
-def learning_by_newton_method(y, tx, w, gamma):
-    """
-    Do one step of Newton's method.
-    Return the loss and updated w.
 
-    Args:
-        y:  shape=(N, 1)
-        tx: shape=(N, D)
-        w:  shape=(D, 1)
-        gamma: scalar
-
-    Returns:
-        loss: scalar number
-        w: shape=(D, 1)
-
-    >>> y = np.c_[[0., 0., 1., 1.]]
-    >>> np.random.seed(0)
-    >>> tx = np.random.rand(4, 3)
-    >>> w = np.array([[0.1], [0.5], [0.5]])
-    >>> gamma = 0.1
-    >>> loss, w = learning_by_newton_method(y, tx, w, gamma)
-    >>> round(loss, 8)
-    0.71692036
-    >>> w
-    array([[-1.31876014],
-           [ 1.0590277 ],
-           [ 0.80091466]])
-    """
-
-    loss,gradient,hessian = logistic_regression(y, tx, w)
-    w = w-gamma*np.dot(np.linalg.inv(hessian),gradient)
-    return w,loss
-'''
 def penalized_logistic_regression(y, tx, w,lambda_):
     """return the loss and gradient.
 
@@ -488,14 +448,10 @@ def reg_logistic_regression(y,tx,lambda_,initial_w,max_iters,gamma):
         for iter in range(max_iters):
             # get loss and update w.
             w,loss = learning_by_penalized_gradient(y,tx,w,gamma,lambda_)
-            # log info
-            #if iter % 100 == 0:
-                #print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
             # converge criterion
             losses.append(loss)
             if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
                 break
-        #print("loss={l}".format(l=compute_mse(y, tx, w)))
         return w,losses[-1]
     
 
