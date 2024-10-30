@@ -327,7 +327,7 @@ def logistic_regression(y,tx,initial_w,max_iters,gamma):
         Current iteration=100, loss=0.5931471805599453
         ...
     """
-    threshold = 1e-8
+    threshold = 1e-10
     losses = []
     w = initial_w
     
@@ -477,7 +477,7 @@ def reg_logistic_regression(y,tx,lambda_,initial_w,max_iters,gamma):
         ...
         loss=0.5001471805599453
     """
-    threshold = 1e-8
+    threshold = 1e-10
     losses = []
     w = initial_w
     if max_iters == 0:
