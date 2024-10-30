@@ -331,26 +331,23 @@ def logistic_regression(y,tx,initial_w,max_iters,gamma):
     losses = []
     w = initial_w
     
-    # start the logistic regression
-    for iter in range(max_iters):
-        # get loss and update w.
-        w,loss = learning_by_gradient_descent(y, tx, w, gamma)
-        #print(w.shape)
-        # log info
-        if iter % 100 == 0:
-            print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
-            
-        # converge criterion
-        losses.append(loss)
-        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
-            break
-        
-    if len(losses) > 1:
-        final_loss = losses[-1]
-    else:
-        final_loss = compute_mse(y, tx, w)
-        
-    return w,final_loss
+    if max_iters == 0:
+        return w,compute_mse(y, tx, w)
+    else: 
+        # start the logistic regression
+        for iter in range(max_iters):
+            # get loss and update w.
+            w,loss = learning_by_gradient_descent(y, tx, w, gamma)
+            #print(w.shape)
+            # log info
+            if iter % 100 == 0:
+                print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
+                
+            # converge criterion
+            losses.append(loss)
+            if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
+                break 
+        return w,losses[-1]
 '''
 def learning_by_newton_method(y, tx, w, gamma):
     """
@@ -483,25 +480,21 @@ def reg_logistic_regression(y,tx,lambda_,initial_w,max_iters,gamma):
     threshold = 1e-8
     losses = []
     w = initial_w
-
-    # start the logistic regression
-    for iter in range(max_iters):
-        # get loss and update w.
-        w,loss = learning_by_penalized_gradient(y,tx,w,gamma,lambda_)
-        # log info
-        if iter % 100 == 0:
-            print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
-        # converge criterion
-        losses.append(loss)
-        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
-            break
-    print("loss={l}".format(l=compute_mse(y, tx, w)))
-    
-    if len(losses) > 1:
-        final_loss = losses[-1]
-    else:
-        final_loss = compute_mse(y, tx, w)
-        
-    return w,final_loss
+    if max_iters == 0:
+        return w,compute_mse(y, tx, w)
+    else: 
+        # start the logistic regression
+        for iter in range(max_iters):
+            # get loss and update w.
+            w,loss = learning_by_penalized_gradient(y,tx,w,gamma,lambda_)
+            # log info
+            if iter % 100 == 0:
+                print("Current iteration={i}, loss={l}".format(i=iter, l=loss))
+            # converge criterion
+            losses.append(loss)
+            if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
+                break
+        print("loss={l}".format(l=compute_mse(y, tx, w)))
+        return w,final_loss
     
 
