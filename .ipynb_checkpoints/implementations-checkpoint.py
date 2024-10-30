@@ -332,7 +332,7 @@ def logistic_regression(y,tx,initial_w,max_iters,gamma):
     w = initial_w
     
     if max_iters == 0:
-        return w,compute_mse(y, tx, w)
+        return w,calculate_loss(y, tx, w)
     else: 
         # start the logistic regression
         for iter in range(max_iters):
@@ -481,7 +481,7 @@ def reg_logistic_regression(y,tx,lambda_,initial_w,max_iters,gamma):
     losses = []
     w = initial_w
     if max_iters == 0:
-        return w,compute_mse(y, tx, w)
+        return w,calculate_loss(y, tx, w)
     else: 
         # start the logistic regression
         for iter in range(max_iters):
