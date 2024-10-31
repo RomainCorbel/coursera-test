@@ -13,8 +13,8 @@ def compute_mse(y, tx, w):
     Returns:
         mse: scalar corresponding to the mse with factor (1 / 2 n) in front of the sum
     """
-    e = y - tx.dot(w)
-    mse = e.dot(e) / (2 * len(e))
+    e = y - np.dot(tx,w)
+    mse = np.dot(e,e) / (2 * e.shape[0])
     return mse
 
 def compute_gradient(y, tx, w):
@@ -312,10 +312,10 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     """Performs regularized logistic regression using penalized gradient descent.
 
     Args:
-        y: array of shape (N, 1) - Target values, where N is the number of samples.
+        y: array of shape (N,) - Target values, where N is the number of samples.
         tx: array of shape (N, D) - Feature matrix, where D is the number of features.
         lambda_: float - Regularization parameter to control overfitting.
-        initial_w: array of shape (D, 1) - Initial weights for the regression.
+        initial_w: array of shape (D,) - Initial weights for the regression.
         max_iters: int - Maximum number of iterations for the gradient descent.
         gamma: float - Step size or learning rate for the gradient descent.
 
