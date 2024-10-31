@@ -13,6 +13,9 @@ def compute_mse(y, tx, w):
     Returns:
         mse: scalar corresponding to the mse with factor (1 / 2 n) in front of the sum
     """
+    y = np.asarray(y).flatten()  # Flatten y to 1D array
+    tx = np.asarray(tx)
+    w = np.asarray(w).flatten()  # Flatten w to 1D array
     e = y - np.dot(tx,w)
     mse = np.dot(e,e) / (2 * e.shape[0])
     return mse
